@@ -1,0 +1,344 @@
+Laravel
+
+//btn-list class is a no-no
+
+//$emailFiles = $request->file();get multiple file from form
+
+//model->controller->view
+
+//if you are using a model to save into database and creating the table manually, you must add the updated_at and created_at cols in the table
+bcos models create timestamps automatically.
+
+
+//clear all cache
+php artisan cache:clear
+ php artisan config:clear
+ php artisan route:clear
+
+//if you have a many2many rship and the model you are accessing is an array, you have to loop through that array to get the individual properties
+
+//xero vid
+https://www.youtube.com/watch?v=sORX2z-AH1k&t=414s
+//Git 
+git add *
+git commit -m
+git push origin ola_crm
+git pull origin main
+git push origin wcrm-dev-ola
+
+
+//sort by latest with model
+Listing::latest()->get()
+
+
+composer require webklex/php-imap
+a new page-change log
+
+//scroll content fixed on caseDetails blade
+
+
+//orgaisation controller and forms.addcontactform for ajax to add to table.
+github personal access token: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
+epiz_34021463 freeehosting username
+add this to tailwind.config file to prevent auth nav from showing
+corePlugins: {
+    visibility: false,
+}
+//always remember to run npm install and npm run dev after installing authentication;
+
+starting a new project,you must install composer/update in the cli
+composer install
+composer update
+
+//seeding a database
+go to database folder->seeders->db seeders and uncomment all
+run php artisan db:seed
+//middleware
+they are used to check certain conditions
+create you middleware 
+register in the kernel.php under middleware aliases
+apply in the construct method check holiday tracker for example. 
+
+//form#
+always include @csrf in all your forms.
+
+create controller
+php artisan make:controller PostsController --resource to create all crud routes
+in the controller, create a method that returns a view(blade)
+define the route in the route folder/web.php file
+
+//Routers
+index will go to show route
+
+//Create migrations
+create a model and include -m to create the migration.
+in the migration, include all the table fields that you want like title,body, etc.
+refresh your table and it will appear
+edit your database name inside the .env file
+run php artisan migrate
+
+//create migration and table
+php artisan make:migration create_employees_table --create=employees
+
+
+//Model
+bring in model into your controller e.g post model into postcontroller
+use App\Models\Post;// use modelnamespace\modelname
+then you can use eloquent to query the database
+
+
+//Eloquent
+Post(modelname)::all() gets every data in the table//index route
+Post::find($id)gets that single data with id from the table
+
+
+
+
+//Using DB instead of eloquennt
+bring in DB by use DB; and then do your query in each method
+//css
+create css folder in the public folder and your css file and then link it in your blades
+ <link href="css/index.css" rel="stylesheet" >
+
+//Post controllers
+index searches the db and renders a view with all posts.edit link {{ route('blog.edit', $post->id) }}
+
+Create renders a form view and the action goes to store, action does not need id action="{{ route('posts.store') }}"
+
+Show searches db with id anfdn displays show view with that sincle post <a href="/posts/{{ $post->id }}">  {{ $post->title }}</a>
+
+Store creates a new post with the model and saves to db
+
+Edit renders a form edit view and the action goes to update, action need id action="{{ route('posts.update', $post->id) }}
+
+update looks up db with the id and saves changes to db.
+
+Delete goes to destroy and deletes using ID. need to create a form for delete button in the index. action="{{ route('posts.destroy', $post->id) }}"
+
+
+
+//Create migrations
+you use migrations to add columns to your table
+adding user_id to our posts table in other to link our users and posts
+we create a migration to do that by php artisan make:migration add_users_to_posts_table
+go to the migration and add your coulmns
+ $table->integer('user_id');// this will add user_id col to our posts table
+ $table->dropColumn('user_id');
+run php artisan migrate;
+go to the controller under store and add user_id so it can associate signed in user to each post
+ $post->user_id = auth()->user()->id;// we are accessing users table and picking the id
+
+//Rollback migration
+
+
+//Linking models together
+in post model: each post has one user: public function user(){
+        return $this->belongsTo('App\Models\User');
+    }
+in user model: each user has many posts: public function posts(){
+        return $this->hasMany('App\Models\Post');
+    }
+now each user jhas access to their posts and vice versa.
+
+//Adding file upload
+and file upload in the create blade and include enctype="multipart/form-data"
+create a migration to add the image column to the database table
+inclide in the postscontorllerr 
+run simulink in terminal php artisan storage:link
+
+//block guest from accessing other routes apart from index and show
+put this in the posts controller;
+ public function __construct()
+    {
+        $this->middleware('auth',['except'=>['index','show']]);
+    }
+//File Upload
+create a migration to add image column to database;
+
+run php artisan storage:link
+
+include this in the store & update section of the controller. remove the else part for update1
+//get a filename with the extension
+           $filenameWithExt = $request->file('cover_image')->getClientOriginalName();
+           //get just filename
+            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+           //get just extension
+           $extension = $request->file('cover_image')->getClientOriginalExtension();
+           //filename to store
+           $fileNameToStore = $filename.'_'.time().'.'.$extension;
+           //upload Image
+           $path = $request->file('cover_image')->storeAs('public/cover_images', $fileNameToStore);
+
+
+ $request->validate([
+            'title'=>'required',
+            'body'=>'required',
+            'cover_image'=>'image|nullable|max:1999',
+  
+        ]);
+
+include this in the database line
+if($request->hasFile('cover_image')){
+        $post->cover_image = $fileNameToStore;
+      }
+51.508742
+-0.120850
+425897.0;
+ 423998.0;
+
+create a paymnt controller
+create 2 views payment list and payment view and 2 routes
+payment-list get everythig from db
+payment list
+    
+//how to return json from database
+1|sXBOMiGOQxjJhyOwTN8YEsiEarKGykdd4kNRfM9o
+
+        $data = DB::table('contacts')
+        ->select('contactFirstName','contactLastName')
+        ->take(20)
+        ->get();
+      
+        return response()->json($data);
+
+//Net-Ninja
+
+@unless(statment)
+@endunless 
+@php
+@endphp
+
+the css file stays in the public folder so html can have access to it.
+
+with method osis used to add additional infomation to the blade and it is accessibles as session
+e.g return redirect('/')->with('msg', 'thanks for your order');
+accessed with: {{ session('msg') }}
+
+
+//Authentication
+protecting routes#
+you can tack on the auth to routes you want to protect and users who are not logged in wont have access 
+e.g Route::get('/pizzas', 'App\Http\Controllers\PizzaController@index')->middleware('auth');// people who are logged out will not be able to see list of pizzas
+
+//Named Route
+the name ensures that you land on any link on the route so if your path changes in the future, you will not have any problem.
+ 
+Great adib-pdf converter course laravel
+
+CREATE A BLADE AND ROUTE FOR THE APP.
+
+//accessing laravel array in js file
+var meters = {!! json_encode($meters) !!}
+
+//LARAVEL APIs
+create your controller and reference it in your routes/api.php
+import model in controller to interact with databse.
+create your route in routes/api.php
+test endpoint in postman and add /api after url b4 route name e,g http://127.0.0.1:8000/api/list
+//Login/Register/Logout
+always add accept-application/json in the headers b4 hitting the endpoints
+//Login
+needs email and password
+//register
+needs email,name,password,password_confirmation fields
+//logout need api_token as it is a protected route.
+
+
+
+//How to google search
+1 use quotation marks to get better results
+2 use ctrl + F in the page to jump to relevant paragraghs
+3 use - to exclude words or websites
+4 
+
+//steps to get visitor details fro laravel app
+include 'use Illuminate\Support\Facades\DB;' in your middleware so you can access the db.
+add the middleware to the list of middlewares in the kernel.php
+create a visitors table and add necessary columns
+create a migration with details and run migration
+you can access thorugh a contorller
+/beaver builder wordpress
+
+//steps to create and send email in laravel
+matt mocha:YT
+
+//Laracasts
+model shuld be singular of db table e.g User  model maps to users db table
+
+you can link models together
+e.g link posts table and categories table
+your post table should have a category_id table made with foreignId //   $table->foreignId('category_id');
+in the post model, you should have a category function like this
+ public function category(){
+        return $this->belongsTo(Category::class);
+    }
+you can access the the category name or any other property through post like
+post->category->name;
+
+//new laravel(brad trave)
+//get all your request parameter with
+ dd( $request->all());
+
+//to display form errors in blade
+@error('name of field')
+<p class="text-red-500 text-xs mt-1">{{$message}}</p>
+@enderror
+
+//retain old data in form field
+value="{{old('nameoffield'}}"
+
+//new file upload
+1 config->filesystems.php
+2    'default' => env('FILESYSTEM_DISK', 'local'), change local to public
+3 controller including other fileds
+# $formFields = $request->validate([
+            'title' => 'required',
+            'company' => 'required',
+            'location' => 'required',
+            'website' => 'required',
+            'email' => ['required', 'email'],
+            'tags' => 'required',
+            'description' => 'required'
+        ]);
+
+        //store image
+        if($request->hasFile('logo')){
+            $formFields['logo'] = $request->file('logo')->store('logos','public');
+        }
+create a link to the public folder by running php artisan storage:link;
+make sure to add logo to fiilable property in your model 
+
+//auth
+@auth @endauthcan be used to check if there is auth
+
+//aading ,auth middleware
+you can add auth middleware to ann route you dont want people to go to if there are not logged in by adding ->middleware('auth') to the end of the route
+and it redirects them to the login page if they try to access the route without logging in
+
+//there is also a guest middleware which you can use to protected register and login route so when a user is logged, they woulkd not be able to access the 
+register and login route cos there are in anyways ->middleware('guest'). it just redirects them to the homepage /home and you can change this route to 
+whatever you make you home page in the providers/routeservice provider   public const HOME = '/home';i can change /home to /
+
+
+organisation_note table one to many relationship
+
+Ticket controller function-taskDocument which
+
+uploadFiles in ticket model
+
+light box hover and shows front page of the document
+
+[ssa_booking]
+route
+resources
+public
+app
+
+ // Attach the mouseout event listener
+            thumbnail.addEventListener('mouseout', function () {
+                // Remove the canvas element
+                var canvas = thumbnail.querySelector('canvas');
+                if (canvas) {
+                    thumbnail.removeChild(canvas);
+                }
+            });
