@@ -1,0 +1,4 @@
+//start
+$(document).ready(function(){
+    //all your code goes in here
+})
